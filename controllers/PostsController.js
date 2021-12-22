@@ -101,10 +101,61 @@ const unlikePost = async (req, res, next) => {
         .map(like => like.user)
         .indexOf(UserId)
     post.likes.splice(removeIndex, 1)
-    post.save()
+    await post.save()
     
     res.status(200).json({
       message: "Post unliked"
+    })
+  } catch (error) {
+    next(error)
+  }
+}
+
+const commentPost = async (req, res, next) => {
+  const { id } = req.params
+  const { id: UserId } = req.auth
+  const { text } = req.body
+
+  try {
+    const error = validationResult(req)
+    if (!error.isEmpty()) throw { name: 'VALIDATION_ERROR', errors: error.errors }
+
+    const user = await User.findById(UserId).select('-password')
+    const post = await Post.findById(id)
+
+    const newComment = {
+      text,
+      name: user.name,
+      avatar: user.avatar,
+      user: UserId
+    }
+
+    post.comments.unshift(newComment)
+    await post.save()
+
+    res.status(200).json({
+      message: "Your comment is added",
+      comment: post.comments
+    })
+  } catch (error) {
+    next(error)
+  }
+}
+
+const deleteCommentPost = async (req, res, next) => {
+  const { id:PostId, comment_id } = req.params
+  const { id: UserId } = req.auth
+  try {
+    const post = await Post.findById(PostId)
+    // Get Likes Index
+    const removeIndex = post.comments
+        .map(comment => comment.user)
+        .indexOf(UserId)
+    post.comments.splice(removeIndex, 1)
+    await post.save()
+    
+    res.status(200).json({
+      message: "Comment deleted"
     })
   } catch (error) {
     next(error)
@@ -117,5 +168,7 @@ module.exports = {
   getPostById,
   deletePostById,
   likePost,
-  unlikePost
+  unlikePost,
+  commentPost,
+  deleteCommentPost
 }

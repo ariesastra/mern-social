@@ -4,7 +4,8 @@ const { authentication } = require('../middleware/authentication')
 const { 
   checkPost, 
   checkLikes,
-  checkUnlike
+  checkUnlike,
+  checkDeleteComment
 } = require('../middleware/authorization')
 const {
   createPost,
@@ -12,7 +13,9 @@ const {
   getPostById,
   deletePostById,
   likePost,
-  unlikePost
+  unlikePost,
+  commentPost,
+  deleteCommentPost
 } = require('../controllers/PostsController')
 
 /**
@@ -79,6 +82,30 @@ posts.put('/unlike/:id',
   authentication,
   checkUnlike,
   unlikePost
+)
+
+/**
+ * @route   PUT api/posts/comment/:id
+ * @desc    Comment a posts data by id
+ * @access  Private
+ */
+posts.put('/comment/:id',
+  authentication,
+  [
+    check('text', 'Text is required').not().isEmpty()
+  ],
+  commentPost
+)
+
+/**
+ * @route   DELETE api/posts/comment/:id/:comment_id
+ * @desc    Delete Comment a posts data by post_id and comment_id
+ * @access  Private
+ */
+posts.delete('/comment/:id/:comment_id',
+  authentication,
+  checkDeleteComment,
+  deleteCommentPost
 )
 
 module.exports = posts

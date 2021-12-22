@@ -43,8 +43,29 @@ const checkUnlike = async (req, res, next) => {
   }
 }
 
+const checkDeleteComment = async (req, res, next) => {
+  const { id:PostId, comment_id } = req.params
+  const { id:UserId } = req.auth
+
+  try {
+    const post = await Post.findById(PostId)
+
+    // Pull out comments
+    const comment = post.comments.find(comment => comment.id === comment_id)
+    // Make sure comment exist
+    if ( !comment ) throw { name: "NOT_FOUND" }
+    // Check comment is owning by login user
+    if ( comment.user.toString() !== UserId ) throw { name: "NOT_AUTHORIZE" }
+
+    next()
+  } catch (error) {
+    next(error)
+  }
+}
+
 module.exports = {
   checkPost,
   checkLikes,
-  checkUnlike
+  checkUnlike,
+  checkDeleteComment
 }
