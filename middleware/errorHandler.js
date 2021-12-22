@@ -25,17 +25,22 @@ const errorHandler = (err, req, res, next) => {
   } else if (err.name === "INVALID") {
     status = 400
     message = "Invalid Credentials"
-  } else if (
-    err.name === "INVALID_PROFILE"
-  ) {
+  } else if ( err.name === "INVALID_PROFILE" ) {
     status = 400
     message = "There is no profile for this user"
-  } else if ( err.name === "CastError" ) {
+  } else if ( 
+    err.name === "CastError" 
+    || err.kind === "ObjectId" 
+    || err.name === "NOT_FOUND"
+  ) {
     status = 400
     message = "Not Found"
-  } else if ( err.response.statusText === "Not Found" ) {
+  } else if ( err.name === "Error" ) {
     status = 400
     message = "No Github profile found"
+  } else if ( err.name === "NOT_AUTHORIZE" ) {
+    status = 401
+    message = "User not Authorized"
   }
 
   res.status(status).json({

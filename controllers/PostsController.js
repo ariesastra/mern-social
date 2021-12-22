@@ -61,8 +61,22 @@ const getPostById = async (req, res, next) => {
   }
 }
 
+const deletePostById = async (req, res, next) => {
+  const { id } = req.params
+  try {
+    await Post.findByIdAndRemove(id)
+
+    res.status(200).json({
+      message: "Your Post deleted"
+    })
+  } catch (error) {
+    next(error)
+  }
+}
+
 module.exports = {
   createPost,
   getAllPost,
-  getPostById
+  getPostById,
+  deletePostById
 }
