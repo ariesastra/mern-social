@@ -1,6 +1,8 @@
 const Profile = require('../models/Profile')
 const User = require('../models/User')
 const { validationResult } = require('express-validator')
+// const request = require('request')
+const github = require('../api/github')
 
 const getProfileData = async (req, res, next) => {
   const { id } = req.auth
@@ -248,6 +250,36 @@ const deleteEducation = async (req, res, next) => {
   }
 }
 
+const getGithubProfile = async (req, res, next) => {
+  const { username } = req.params
+
+  try {
+    // Using Request
+    // const options = {
+    //   uri: `https://api.github.com/users/${username}/repos?per_page=5&sort=created:desc&client_id=${process.env.GITHUB_CLIENT_ID}&client_secret=${process.env.GITHUB_CLIENT_SECRET}`,
+    //   method: 'GET',
+    //   headers: {'user-agent': 'node.js'}
+    // }
+    
+    // request(options, (err, response, body) => {
+    //   if ( err ) console.error(err)
+
+    //   if ( response.statusCode !== 200 ) throw { name: "GITHUB_NOT_FOUND" }
+
+    //   res.status(200).json(JSON.parse(body))
+    // })
+
+    // Using Axios
+    const result = await github.get(`/${username}/repos?per_page=5&sort=created:desc&client_id=${process. env.GITHUB_CLIENT_ID}&client_secret=${process.env.GITHUB_CLIENT_SECRET}`, {
+      headers: {'user-agent': 'node.js'}
+    })
+    
+    res.status(200).json(result.data)
+  } catch (error) {
+    next(error)
+  }
+}
+
 module.exports = {
   getProfileData,
   postProfileData,
@@ -257,5 +289,6 @@ module.exports = {
   addProfileExperience,
   deleteExpById,
   addEducationProfile,
-  deleteEducation
+  deleteEducation,
+  getGithubProfile
 }

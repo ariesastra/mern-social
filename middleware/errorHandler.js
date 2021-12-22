@@ -31,6 +31,9 @@ const errorHandler = (err, req, res, next) => {
   ) {
     status = 400
     message = "There is no profile for this user"
+  } else if ( err.response.statusText === "Not Found" ) {
+    status = 400
+    message = "No Github profile found"
   }
 
   res.status(status).json({

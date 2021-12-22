@@ -10,7 +10,8 @@ const {
   addProfileExperience,
   deleteExpById, 
   addEducationProfile,
-  deleteEducation
+  deleteEducation,
+  getGithubProfile
 } = require('../controllers/ProfileController')
 
 /**
@@ -120,6 +121,15 @@ profile.delete('/education/:edu_id',
   /**@middleware authentication */
   authentication,
   deleteEducation
+)
+
+/**
+ * @route   GET api/profile/github/:username
+ * @desc    Get User repos from github
+ * @access  Public
+ */
+profile.get('/github/:username',
+  getGithubProfile
 )
 
 module.exports = profile
