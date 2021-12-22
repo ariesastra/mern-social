@@ -25,6 +25,12 @@ const errorHandler = (err, req, res, next) => {
   } else if (err.name === "INVALID") {
     status = 400
     message = "Invalid Credentials"
+  } else if (
+    err.name === "INVALID_PROFILE"
+    || err.name === "CastError"
+  ) {
+    status = 400
+    message = "There is no profile for this user"
   }
 
   res.status(status).json({
