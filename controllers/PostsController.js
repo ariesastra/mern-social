@@ -34,6 +34,35 @@ const createPost = async (req, res, next) => {
   }  
 }
 
+const getAllPost = async (req, res, next) => {
+  try {
+    const result = await Post.find().sort({
+      date: -1 // get the most recent post
+    })
+
+    res.status(200).json({
+      result
+    })
+  } catch (error) {
+    next(error)
+  }
+}
+
+const getPostById = async (req, res, next) => {
+  const { id } = req.params
+  try {
+    const result = await Post.findById(id)
+
+    res.status(200).json({
+      result
+    })
+  } catch (error) {
+    next(error)
+  }
+}
+
 module.exports = {
-  createPost
+  createPost,
+  getAllPost,
+  getPostById
 }

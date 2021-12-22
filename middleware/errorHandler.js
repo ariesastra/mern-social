@@ -27,10 +27,12 @@ const errorHandler = (err, req, res, next) => {
     message = "Invalid Credentials"
   } else if (
     err.name === "INVALID_PROFILE"
-    || err.name === "CastError"
   ) {
     status = 400
     message = "There is no profile for this user"
+  } else if ( err.name === "CastError" ) {
+    status = 400
+    message = "Not Found"
   } else if ( err.response.statusText === "Not Found" ) {
     status = 400
     message = "No Github profile found"
