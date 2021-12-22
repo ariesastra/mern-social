@@ -188,6 +188,66 @@ const deleteExpById = async (req, res, next) => {
   }
 }
 
+const addEducationProfile = async (req, res, next) => {
+  const { id } = req.auth
+  const {
+    school,
+    degree,
+    fieldofstudy,
+    from,
+    to,
+    current,
+    description
+  } = req.body
+
+  try {
+    const error = validationResult(req)
+    if (!error.isEmpty()) throw { name: 'VALIDATION_ERROR', errors: error.errors }
+
+    const addEdu = {
+      school,
+      degree,
+      fieldofstudy,
+      from,
+      to,
+      current,
+      description
+    }
+    const profile = await Profile.findOne({ user: id })
+    profile.education.unshift(addEdu)
+    await profile.save()
+
+    res.status(201).json({
+      message: "Education added",
+      profile
+    })
+  } catch (error) {
+    next(error)
+  }
+}
+
+const deleteEducation = async (req, res, next) => {
+  const { edu_id } = req.params
+  const { id } = req.auth
+
+  try {
+    const profile = await Profile.findOne({ user: id })
+    
+    // Get Education Index
+    const removeIndex = profile.education
+                        .map(edu => edu.id)
+                        .indexOf(edu_id)
+    profile.education.splice(removeIndex, 1)
+    profile.save()
+    
+    res.status(200).json({
+      message: "Education deleted"
+    })
+  } catch (error) {
+    next(error)
+  }
+}
+
 module.exports = {
   getProfileData,
   postProfileData,
@@ -195,5 +255,7 @@ module.exports = {
   getProfileByUserId,
   deleteProfile,
   addProfileExperience,
-  deleteExpById
+  deleteExpById,
+  addEducationProfile,
+  deleteEducation
 }

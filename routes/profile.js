@@ -8,7 +8,9 @@ const {
   getProfileByUserId,
   deleteProfile,
   addProfileExperience,
-  deleteExpById
+  deleteExpById, 
+  addEducationProfile,
+  deleteEducation
 } = require('../controllers/ProfileController')
 
 /**
@@ -90,6 +92,34 @@ profile.delete('/experience/:exp_id',
   /**@middleware authentication */
   authentication,
   deleteExpById
+)
+
+/**
+ * @route   PUT api/profile/education
+ * @desc    Add Education to profile
+ * @access  Private
+ */
+profile.put('/education',
+  /**@middleware authentication */
+  authentication,
+  [
+    check('school', 'School is required').not().isEmpty(),
+    check('degree', 'Degree is required').not().isEmpty(),
+    check('fieldofstudy', 'Field of Study is required').not().isEmpty(),
+    check('from', 'From date is required').not().isEmpty(),
+  ],
+  addEducationProfile
+)
+
+/**
+ * @route   DELETE api/profile/education/:edu_id
+ * @desc    Delete Education from profile
+ * @access  Private
+ */
+profile.delete('/education/:edu_id',
+  /**@middleware authentication */
+  authentication,
+  deleteEducation
 )
 
 module.exports = profile
