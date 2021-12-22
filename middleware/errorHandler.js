@@ -44,6 +44,9 @@ const errorHandler = (err, req, res, next) => {
   } else if ( err.name === "ALREADY_LIKED") {
     status = 401
     message = "Post already liked"
+  } else if ( err.name === "FORBIDDEN" ) {
+    status = 401
+    message = "Forbidden Access"
   }
 
   res.status(status).json({

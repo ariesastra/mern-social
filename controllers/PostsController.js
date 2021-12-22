@@ -90,10 +90,32 @@ const likePost = async (req, res, next) => {
   }
 }
 
+const unlikePost = async (req, res, next) => {
+  const { id } = req.params
+  const { id: UserId } = req.auth
+
+  try {
+    const post = await Post.findById(id)
+    // Get Likes Index
+    const removeIndex = post.likes
+        .map(like => like.user)
+        .indexOf(UserId)
+    post.likes.splice(removeIndex, 1)
+    post.save()
+    
+    res.status(200).json({
+      message: "Post unliked"
+    })
+  } catch (error) {
+    next(error)
+  }
+}
+
 module.exports = {
   createPost,
   getAllPost,
   getPostById,
   deletePostById,
-  likePost
+  likePost,
+  unlikePost
 }

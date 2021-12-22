@@ -3,14 +3,16 @@ const { check } = require('express-validator')
 const { authentication } = require('../middleware/authentication')
 const { 
   checkPost, 
-  checkLikes 
+  checkLikes,
+  checkUnlike
 } = require('../middleware/authorization')
 const {
   createPost,
   getAllPost,
   getPostById,
   deletePostById,
-  likePost
+  likePost,
+  unlikePost
 } = require('../controllers/PostsController')
 
 /**
@@ -66,6 +68,17 @@ posts.put('/like/:id',
   authentication,
   checkLikes,
   likePost
+)
+
+/**
+ * @route   PUT api/posts/unlike/:id
+ * @desc    Un-Like a posts data by id
+ * @access  Private
+ */
+posts.put('/unlike/:id',
+  authentication,
+  checkUnlike,
+  unlikePost
 )
 
 module.exports = posts

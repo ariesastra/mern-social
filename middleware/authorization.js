@@ -29,7 +29,22 @@ const checkLikes = async (req, res, next) => {
   }
 }
 
+const checkUnlike = async (req, res, next) => {
+  const { id } = req.params
+  const { id: UserId } = req.auth
+  try {
+    const post = await Post.findById(id)
+    const likeUser = post.likes.filter(like => like.user.toString() === UserId)
+    if ( likeUser.length < 1 ) throw { name: "FORBIDDEN" }
+
+    next()
+  } catch (error) {
+    next(error)
+  }
+}
+
 module.exports = {
   checkPost,
-  checkLikes
+  checkLikes,
+  checkUnlike
 }
