@@ -41,6 +41,9 @@ const errorHandler = (err, req, res, next) => {
   } else if ( err.name === "NOT_AUTHORIZE" ) {
     status = 401
     message = "User not Authorized"
+  } else if ( err.name === "ALREADY_LIKED") {
+    status = 401
+    message = "Post already liked"
   }
 
   res.status(status).json({

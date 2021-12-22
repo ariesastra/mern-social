@@ -1,12 +1,16 @@
 const posts = require('express').Router()
 const { check } = require('express-validator')
 const { authentication } = require('../middleware/authentication')
-const { checkPost } = require('../middleware/authorization')
+const { 
+  checkPost, 
+  checkLikes 
+} = require('../middleware/authorization')
 const {
   createPost,
   getAllPost,
   getPostById,
-  deletePostById
+  deletePostById,
+  likePost
 } = require('../controllers/PostsController')
 
 /**
@@ -51,6 +55,17 @@ posts.delete('/:id',
   authentication,
   checkPost,
   deletePostById
+)
+
+/**
+ * @route   PUT api/posts/like/:id
+ * @desc    Like a posts data by id
+ * @access  Private
+ */
+posts.put('/like/:id',
+  authentication,
+  checkLikes,
+  likePost
 )
 
 module.exports = posts

@@ -74,9 +74,26 @@ const deletePostById = async (req, res, next) => {
   }
 }
 
+const likePost = async (req, res, next) => {
+  const { id } = req.params
+  const { id: UserId } = req.auth
+  try {
+    const post = await Post.findById(id)
+    post.likes.unshift({
+      user: UserId
+    })
+    await post.save()
+
+    res.status(200).json(post.likes)
+  } catch (error) {
+    next(error)
+  }
+}
+
 module.exports = {
   createPost,
   getAllPost,
   getPostById,
-  deletePostById
+  deletePostById,
+  likePost
 }

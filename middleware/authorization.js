@@ -14,6 +14,22 @@ const checkPost = async (req, res, next) => {
   }
 }
 
+const checkLikes = async (req, res, next) => {
+  const { id } = req.params
+  const { id: UserId } = req.auth
+  try {
+    const post = await Post.findById(id)
+    if ( !post ) throw { name: "NOT_FOUND" }
+    const likeUser = post.likes.filter(like => like.user.toString() === UserId)
+    if ( likeUser.length > 0 ) throw { name: "ALREADY_LIKED" }
+
+    next()
+  } catch (error) {
+    next(error)
+  }
+}
+
 module.exports = {
-  checkPost
+  checkPost,
+  checkLikes
 }
