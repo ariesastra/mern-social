@@ -4,9 +4,10 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "dev": "nodemon bin/www",
     "start": "node bin/www",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "server": "nodemon bin/www",
+    "client": "npm start --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "keywords": [],
   "author": "ariesastra",
