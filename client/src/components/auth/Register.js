@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react'
+import React, { useState } from 'react'
 import server from '../../apis/serverApi'
 
 const Register = () => {
@@ -41,7 +41,6 @@ const Register = () => {
   }
 
   return (
-  <Fragment>
     <div className='container'>
       <h1 className="large text-primary">Sign Up</h1>
         <p className="lead"><i className="fas fa-user"></i> Create Your Account</p>
@@ -95,7 +94,6 @@ const Register = () => {
           Already have an account? <a href="login.html">Sign In</a>
         </p>
     </div>
-  </Fragment> 
   )
 }
 
