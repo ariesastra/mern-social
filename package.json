@@ -28,5 +28,6 @@
   "devDependencies": {
     "concurrently": "^6.5.1",
     "nodemon": "^2.0.15"
-  }
+  },
+  "proxy": "http://127.0.0.1:5000"
 }

@@ -5,8 +5,8 @@ const cors = require('cors')
 const connectDB = require('./config/db')
 
 // MIDDLEWARE
-connectDB()
 app.use(cors())
+connectDB()
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
