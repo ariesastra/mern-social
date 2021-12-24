@@ -5,7 +5,6 @@ import PropTypes from 'prop-types'
 
 import { setAlert } from '../../actions/alert'
 import { register } from '../../actions/auth'
-import server from '../../apis/serverApi'
 import Alert from '../layout/Alert'
 
 const Register = ({ setAlert, register }) => {
@@ -98,10 +97,13 @@ const Register = ({ setAlert, register }) => {
 
 Register.propTypes = {
   setAlert: PropTypes.func.isRequired,
-  register: PropTypes.func.isRequired,
+  register: PropTypes.func.isRequired
 }
 
 export default connect(
   null, 
-  { setAlert, register }
+  { 
+    setAlert, 
+    register
+  }
 )(Register)

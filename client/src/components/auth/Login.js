@@ -1,7 +1,11 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
+import PropTypes from 'prop-types'
+import { login } from '../../actions/auth'
+import Alert from '../layout/Alert'
 
-const Login = () => {
+const Login = ({ login }) => {
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -15,14 +19,13 @@ const Login = () => {
 
   const doLogin = async e => {
     e.preventDefault()
-    console.log(email, password);
+    
+    login({email, password})
   }
 
   return (
   <section className="container">
-    <div className="alert alert-danger">
-      Invalid credentials
-    </div>
+    <Alert />
     <h1 className="large text-primary">Sign In</h1>
     <p className="lead"><i className="fas fa-user"></i> Sign into Your Account</p>
     <form className="form" onSubmit={e => doLogin(e)}>
@@ -54,4 +57,8 @@ const Login = () => {
   )
 }
 
-export default Login
+Login.propTypes = {
+  login: PropTypes.func.isRequired,
+}
+
+export default connect(null, { login })(Login)

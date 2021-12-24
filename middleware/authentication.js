@@ -6,7 +6,7 @@ const authentication = async (req, res, next) => {
   
   try {
     if ( !token ) throw { name: "UNAUTHORIZE_TOKEN"}
-    
+
     const authenticate = verifyToken(token)
     if ( !authenticate ) throw { name: "UNAUTHORIZE_TOKEN" }
 

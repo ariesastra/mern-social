@@ -1,9 +1,10 @@
 import { combineReducers } from 'redux'
 
 import alert from './alert'
-import register from './auth'
+import authUser from './auth'
 
 export default combineReducers({
   alert,
-  register
+  authUser
+  
 })

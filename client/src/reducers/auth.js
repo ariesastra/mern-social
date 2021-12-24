@@ -1,6 +1,10 @@
 import {
     REGISTER_FAIL,
-    REGISTER_SUCCESS
+    REGISTER_SUCCESS,
+    USER_LOADED,
+    AUTH_ERROR,
+    LOGIN_SUCCESS,
+    LOGIN_FAIL
 } from '../actions/types'
 
 const initialState = {
@@ -10,10 +14,18 @@ const initialState = {
     user: null
 }
 
-const register = (state= initialState, action) => {
+const authUser = (state= initialState, action) => {
     const { type, payload } = action
     switch (type) {
+        case USER_LOADED: 
+            return {
+                ...state,
+                isAuthenticated: true,
+                loading: false,
+                user: payload.user
+            }
         case REGISTER_SUCCESS:
+        case LOGIN_SUCCESS:
             localStorage.setItem('access_token', payload.access_token)
             return {
                 ...state,
@@ -23,6 +35,8 @@ const register = (state= initialState, action) => {
             }
     
         case REGISTER_FAIL:
+        case AUTH_ERROR:
+        case LOGIN_FAIL:
             localStorage.removeItem('access_token')
             return {
                 ...state,
@@ -36,4 +50,4 @@ const register = (state= initialState, action) => {
     }
 }
 
-export default register
+export default authUser
