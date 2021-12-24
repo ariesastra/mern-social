@@ -19,7 +19,7 @@ export const loadUser = () => async dispatch => {
 
     try {
         const response = await server.get('/api/auth')
-        console.log(response.data);
+        
         dispatch({
             type: USER_LOADED,
             payload: response.data
@@ -79,7 +79,7 @@ export const login = ({ email, password }) => async dispatch => {
         dispatch(loadUser())
     } catch (error) {
         const errors = error.response.data.errors
-        console.log(errors);
+        
         if ( errors ) {
             errors.forEach(error => dispatch(setAlert(error, 'danger')))
         }
