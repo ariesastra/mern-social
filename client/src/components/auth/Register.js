@@ -1,12 +1,14 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { setAlert } from '../../actions/alert'
 import PropTypes from 'prop-types'
+
+import { setAlert } from '../../actions/alert'
+import { register } from '../../actions/auth'
 import server from '../../apis/serverApi'
 import Alert from '../layout/Alert'
 
-const Register = ({ setAlert }) => {
+const Register = ({ setAlert, register }) => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -33,18 +35,9 @@ const Register = ({ setAlert }) => {
         'danger'
       );
     } else {
-      const newUser = {
-        name,
-        email,
-        password
-      }
-
-      try {
-        const result = await server.post('/api/users/register', newUser, {})
-        console.log(result.data);
-      } catch (error) {
-        console.error(error.response.data)
-      }
+      register({
+        name, email, password
+      })
     }
   }
 
@@ -59,7 +52,6 @@ const Register = ({ setAlert }) => {
               type="text" 
               placeholder="Name" 
               name="name" 
-              required 
               value={name}
               onChange={e => onChange(e)}
             />
@@ -82,7 +74,6 @@ const Register = ({ setAlert }) => {
               type="password"
               placeholder="Password"
               name="password"
-              minLength="6"
               value={password}
               onChange={e => onChange(e)}
             />
@@ -92,7 +83,6 @@ const Register = ({ setAlert }) => {
               type="password"
               placeholder="Confirm Password"
               name="password2"
-              minLength="6"
               value={password2}
               onChange={e => onChange(e)}
             />
@@ -108,9 +98,10 @@ const Register = ({ setAlert }) => {
 
 Register.propTypes = {
   setAlert: PropTypes.func.isRequired,
+  register: PropTypes.func.isRequired,
 }
 
 export default connect(
   null, 
-  { setAlert }
+  { setAlert, register }
 )(Register)
