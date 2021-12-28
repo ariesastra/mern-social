@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Navigate , Link } from 'react-router-dom'
+import { Navigate, Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { login } from '../../actions/auth'
@@ -25,7 +25,7 @@ const Login = ({ login, isAuthenticated }) => {
 
   // Redirect if isAuthenticated = true
   if ( isAuthenticated ) {
-    return <Navigate  to="/dashboard" />
+    return <Navigate to="/dashboard" />
   }
 
   return (
@@ -68,7 +68,7 @@ Login.propTypes = {
 }
 
 const mapStateToProps = state => ({
-  isAuthenticated: state.auth.isAuthenticated
+  isAuthenticated: state.authUser.isAuthenticated
 })
 
 export default connect(

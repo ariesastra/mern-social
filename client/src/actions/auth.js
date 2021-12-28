@@ -4,7 +4,9 @@ import {
     USER_LOADED,
     AUTH_ERROR,
     LOGIN_SUCCESS,
-    LOGIN_FAIL
+    LOGIN_FAIL,
+    LOGOUT_SUCCESS,
+    CLEAR_PROFILE,
 } from './types'
 import server from '../apis/serverApi'
 import { setAlert } from './alert'
@@ -88,4 +90,10 @@ export const login = ({ email, password }) => async dispatch => {
             type: LOGIN_FAIL
         })
     }
+}
+
+// Logout User
+export const logout = () => dispatch => {
+    dispatch({type: LOGOUT_SUCCESS})
+    dispatch({type: CLEAR_PROFILE})
 }
